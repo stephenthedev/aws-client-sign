@@ -1,0 +1,30 @@
+{
+  "name": "aws-client-sign",
+  "homepage": "https://github.com/raghunat/aws-client-sign",
+  "authors": [
+    "Professor Raghunath <raghunat@fredonia.edu>"
+  ],
+  "description": "Helps with generating signed headers for aws v4 signatures.",
+  "main": "dist/aws-client-sign.min.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "Amazon",
+    "AWS",
+    "Signature",
+    "v4",
+    "APIGateway"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "cryptojslib": "~3.1.2"
+  }
+}
