@@ -34,7 +34,7 @@ describe('AWSSigner', function () {
     let result = instance.signRoute('get', 'test/provision', {
       id: 10
     }, '', new Date('Mon Jan 04 2016 09:30:47 GMT-0500 (EST)'));
-    console.log(result);
+    // console.log(result);
     result.should.be.an.Object; // jshint ignore:line
     should.exist(result['x-amz-date']);
     should.exist(result['x-amz-security-token']);
