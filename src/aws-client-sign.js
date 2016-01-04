@@ -18,8 +18,10 @@ class AWSSigner {
 
     // create canonical request
     let cRequest = this.createCanonicalRequest.apply(this, arguments);
+    // console.log(cRequest, '\n\n\n');
     // create string to sign
     let stringToSign = this.createStringToSign(cRequest, signDate);
+    // console.log(stringToSign, '\n\n\n');
     // create signature for header
     let signature = this.createSignature(stringToSign, signDate);
 
@@ -59,7 +61,7 @@ class AWSSigner {
     if (queryParameterObj) {
       Object.keys(queryParameterObj).sort().forEach(k => pieces.push(`${k}=${encodeURIComponent(queryParameterObj[k])}`));
     }
-    return pieces.length > 1 ? pieces.join('&') : '';
+    return pieces.length > 0 ? pieces.join('&') : '';
   }
 
   hashString(str) {
