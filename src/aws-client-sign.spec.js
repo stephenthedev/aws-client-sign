@@ -32,4 +32,28 @@ describe('AWSSigner', function () {
     result['host'].should.equal('testHost');
     result['Authorization'].should.equal('AWS4-HMAC-SHA256 Credential=key/20150101/region/service/aws4_request, SignedHeaders=content-type;host;x-amz-date;x-amz-security-token, Signature=d2bae319d1beb4d1e5224db31f2217ccde0b0482e1dc833c03f8ba0cca474974');
   });
+
+  it('#createQueryParameters', () => {
+    instance.createQueryParameters({
+      id: 1,
+      name: 'stephen',
+      body: 'test'
+    }).should.equal('body=test&id=1&name=stephen');
+  });
+
+  it('#hashString', () => {
+    instance.hashString('').toString().should.equal('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');
+  });
+
+  it('#hmac', () => {
+    instance.hmac('', '').toString().should.equal('b613679a0814d9ec772f95d778c35fc5ff1697c493715653c6c712144292c5ad');
+  });
+
+  it('#getAmzLongDate', () => {
+    instance.getAmzLongDate(new Date('1/1/01')).should.equal('20010101T050000Z');
+  });
+
+  it('#getAmzShortDate', () => {
+    instance.getAmzShortDate(new Date('1/1/01')).should.equal('20010101');
+  });
 });

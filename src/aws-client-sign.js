@@ -34,7 +34,7 @@ class AWSSigner {
   }
 
   createCanonicalRequest(method, route, queryParameters, stringBody, date) {
-    return `${method.toUpperCase()}\n${route.charAt(0) !== '/' ? '/' + route : route}\n\ncontent-type:application/json\nhost:${this._host}\n` +
+    return `${method.toUpperCase()}\n${route.charAt(0) !== '/' ? '/' + route : route}\n${this.createQueryParameters(queryParameters)}\ncontent-type:application/json\nhost:${this._host}\n` +
       `x-amz-date:${this.getAmzLongDate(date)}\n${this._token ? 'x-amz-security-token:' + this._token + '\n' : ''}\n` +
       `content-type;host;x-amz-date;${this._token ? 'x-amz-security-token' : ''}\n` + this.hashString(stringBody);
   }
@@ -52,6 +52,14 @@ class AWSSigner {
         ), 'aws4_request'
       ), stringToSign
     ).toString();
+  }
+
+  createQueryParameters(queryParameterObj) {
+    let pieces = [];
+    if (queryParameterObj) {
+      Object.keys(queryParameterObj).sort().forEach(k => pieces.push(`${k}=${encodeURIComponent(queryParameterObj[k])}`));
+    }
+    return pieces.length > 1 ? pieces.join('&') : '';
   }
 
   hashString(str) {
