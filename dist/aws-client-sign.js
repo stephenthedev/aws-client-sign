@@ -26,8 +26,10 @@ var AWSSigner = (function () {
 
       // create canonical request
       var cRequest = this.createCanonicalRequest.apply(this, arguments);
+      // console.log(cRequest, '\n\n\n');
       // create string to sign
       var stringToSign = this.createStringToSign(cRequest, signDate);
+      // console.log(stringToSign, '\n\n\n');
       // create signature for header
       var signature = this.createSignature(stringToSign, signDate);
 
@@ -42,7 +44,7 @@ var AWSSigner = (function () {
   }, {
     key: 'createCanonicalRequest',
     value: function createCanonicalRequest(method, route, queryParameters, stringBody, date) {
-      return method.toUpperCase() + '\n' + (route.charAt(0) !== '/' ? '/' + route : route) + '\n\ncontent-type:application/json\nhost:' + this._host + '\n' + ('x-amz-date:' + this.getAmzLongDate(date) + '\n' + (this._token ? 'x-amz-security-token:' + this._token + '\n' : '') + '\n') + ('content-type;host;x-amz-date;' + (this._token ? 'x-amz-security-token' : '') + '\n') + this.hashString(stringBody);
+      return method.toUpperCase() + '\n' + (route.charAt(0) !== '/' ? '/' + route : route) + '\n' + this.createQueryParameters(queryParameters) + '\ncontent-type:application/json\nhost:' + this._host + '\n' + ('x-amz-date:' + this.getAmzLongDate(date) + '\n' + (this._token ? 'x-amz-security-token:' + this._token + '\n' : '') + '\n') + ('content-type;host;x-amz-date;' + (this._token ? 'x-amz-security-token' : '') + '\n') + this.hashString(stringBody);
     }
   }, {
     key: 'createStringToSign',
@@ -53,6 +55,17 @@ var AWSSigner = (function () {
     key: 'createSignature',
     value: function createSignature(stringToSign, date) {
       return this.hmac(this.hmac(this.hmac(this.hmac(this.hmac('AWS4' + this._secretAccessKey, this.getAmzShortDate(date)), this._region), this._service), 'aws4_request'), stringToSign).toString();
+    }
+  }, {
+    key: 'createQueryParameters',
+    value: function createQueryParameters(queryParameterObj) {
+      var pieces = [];
+      if (queryParameterObj) {
+        Object.keys(queryParameterObj).sort().forEach(function (k) {
+          return pieces.push(k + '=' + encodeURIComponent(queryParameterObj[k]));
+        });
+      }
+      return pieces.length > 0 ? pieces.join('&') : '';
     }
   }, {
     key: 'hashString',
