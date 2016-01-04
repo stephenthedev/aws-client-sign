@@ -18,13 +18,13 @@ class AWSSigner {
 
     // create canonical request
     let cRequest = this.createCanonicalRequest.apply(this, arguments);
-    // console.log(cRequest, '\n\n\n');
+    console.log('aws-client-sign canonical request: ', cRequest, '\n\n\n');
     // create string to sign
     let stringToSign = this.createStringToSign(cRequest, signDate);
-    // console.log(stringToSign, '\n\n\n');
+    console.log('aws-client-sign string to sign: ', stringToSign, '\n\n\n');
     // create signature for header
     let signature = this.createSignature(stringToSign, signDate);
-
+    console.log('aws-client-sign signature: ', signature, '\n\n\n');
     // Create Headers Object
     return {
       'x-amz-date': this.getAmzLongDate(signDate),
