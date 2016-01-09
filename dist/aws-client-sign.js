@@ -26,13 +26,13 @@ var AWSSigner = (function () {
 
       // create canonical request
       var cRequest = this.createCanonicalRequest.apply(this, arguments);
-      console.log('aws-client-sign canonical request: ', cRequest, '\n\n\n');
+      // console.log('aws-client-sign canonical request: ', cRequest, '\n\n\n');
       // create string to sign
       var stringToSign = this.createStringToSign(cRequest, signDate);
-      console.log('aws-client-sign string to sign: ', stringToSign, '\n\n\n');
+      // console.log('aws-client-sign string to sign: ', stringToSign, '\n\n\n');
       // create signature for header
       var signature = this.createSignature(stringToSign, signDate);
-      console.log('aws-client-sign signature: ', signature, '\n\n\n');
+      // console.log('aws-client-sign signature: ', signature, '\n\n\n');
       // Create Headers Object
       return {
         'x-amz-date': this.getAmzLongDate(signDate),
